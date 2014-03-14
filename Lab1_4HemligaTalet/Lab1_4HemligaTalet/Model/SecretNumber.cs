@@ -57,7 +57,6 @@ namespace Lab1_4HemligaTalet.Model
                 
         }
 
-
         public Outcome Outcome
         { get; set; }
 
@@ -66,15 +65,40 @@ namespace Lab1_4HemligaTalet.Model
 
         SecretNumber()
         {
-
+            Initialize();
         }
 
         public void Initialize()
-        { }
+        {
+            Random random = new Random();
+            _number = random.Next(1, 100);
+            _previousGuesses.Clear();
+            Outcome = Outcome.Indefinite;
+        }
 
         public Outcome MakeGuess(int guess)
         {
-            return Outcome.Low;
+
+            if (guess < 1 || guess > 199)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            else if (guess == Number)
+            {
+                PreviousGuesses.Add(guess);
+                return Outcome.Correct;
+            }
+            else if (guess < Number)
+            {
+                PreviousGuesses.Add(guess);
+                return Outcome.Low;
+            }
+            else
+            {
+                PreviousGuesses.Add(guess);
+                return Outcome.High;
+            }
         }
     }
 }
