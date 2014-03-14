@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Lab1_4HemligaTalet.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Lab1_4HemligaTalet.Default" ViewStateMode="Disabled" %>
 
 <!DOCTYPE html>
 
@@ -17,6 +17,7 @@
         <asp:Button ID="OkButton" runat="server" Text="Button" OnClick="OkButton_Click" />
         <asp:Label ID="Label1" runat="server" Text=""></asp:Label>
         <asp:Button ID="NewButton" runat="server" Text="Button" Visible="false" />
+        <asp:Label ID="Label2" runat="server" Text=""></asp:Label>
 
     </div>
     </form>

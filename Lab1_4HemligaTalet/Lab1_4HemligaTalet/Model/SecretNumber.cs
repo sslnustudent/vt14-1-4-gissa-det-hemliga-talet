@@ -39,7 +39,7 @@ namespace Lab1_4HemligaTalet.Model
         }
 
         public int Count
-        { get { return PreviousGuesses.Count; } }
+        { get { if (PreviousGuesses == null) { return 0; } else { return PreviousGuesses.Count; } } }
 
         public int? Number
         {
@@ -63,9 +63,11 @@ namespace Lab1_4HemligaTalet.Model
         public List<int> PreviousGuesses
         { get { return _previousGuesses; } }
 
-        SecretNumber()
+        public SecretNumber()
         {
-            Initialize();
+            _previousGuesses = new List<int>();
+            Random random = new Random();
+            _number = random.Next(1, 100);
         }
 
         public void Initialize()
@@ -79,11 +81,14 @@ namespace Lab1_4HemligaTalet.Model
         public Outcome MakeGuess(int guess)
         {
 
-            if (guess < 1 || guess > 199)
+            if (guess < 1 || guess > 100)
             {
                 throw new ArgumentOutOfRangeException();
             }
-
+            else if (CanMakeGuess == false)
+            {
+                return Outcome.NoMoreGuesses;
+            }
             else if (guess == Number)
             {
                 PreviousGuesses.Add(guess);

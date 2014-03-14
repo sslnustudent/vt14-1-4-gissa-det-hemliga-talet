@@ -10,18 +10,32 @@ namespace Lab1_4HemligaTalet
 {
     public partial class Default : System.Web.UI.Page
     {
-        public SecretNumber secretNumer;
+        public SecretNumber _secretNumer;
+
+        public SecretNumber SecretNumer
+        {
+            get { return _secretNumer ?? (_secretNumer = new SecretNumber()); }
+            set { _secretNumer = value; }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["a"] != null)
             {
-                secretNumer = (SecretNumber)Session["a"];
+                Label1.Text = "";
+                SecretNumer = (SecretNumber)Session["a"];
                 Session.Remove("a");
                 //Label1.Text = secretNumer.PreviousGuesses;
-                for (int i = 0; i < secretNumer.Count; i++ )
+                for (int i = 0; i < SecretNumer.Count; i++)
                 {
-                    Label1.Text += secretNumer.PreviousGuesses[i];
+
+                    Label1.Text += SecretNumer.PreviousGuesses[i];
+                    Label1.Text += " ";
+                }
+                if (SecretNumer.CanMakeGuess == false)
+                {
+                    Label2.Text = "Slut på försök";
+                    OkButton.Enabled = false;
                 }
             }
         }
@@ -30,23 +44,27 @@ namespace Lab1_4HemligaTalet
         {
             Outcome outcome;
             int guess = int.Parse(GuessTextBox.Text);
-            outcome = secretNumer.MakeGuess(guess);
+            outcome = SecretNumer.MakeGuess(guess);
 
             if (outcome == Outcome.Correct)
             {
-                Label1.Text = "Rätt";
+                Label2.Text = "Rätt";
+            }
+            else if (outcome == Outcome.NoMoreGuesses)
+            {
+                Label2.Text = "Slut på försök";
+                OkButton.Enabled = false;
             }
             else if (outcome == Outcome.Low)
             {
-                Label1.Text = "För lågt";
+                Label2.Text = "För lågt";
             }
             else if (outcome == Outcome.High)
             {
-                Label1.Text = "För högt";
+                Label2.Text = "För högt";
             }
 
-
-            Session["a"] = secretNumer;
+            Session["a"] = SecretNumer;
         }
     }
 }
