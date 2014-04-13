@@ -45,14 +45,7 @@ namespace Lab1_4HemligaTalet.Model
         {
             get 
             {
-                if (CanMakeGuess == true)
-                {
                     return _number;
-                }
-                else
-                {
-                    return null;
-                }
             }
                 
         }

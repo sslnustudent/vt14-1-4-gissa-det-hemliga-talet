@@ -14,9 +14,9 @@
         <asp:TextBox ID="GuessTextBox" runat="server"></asp:TextBox>
         <asp:RequiredFieldValidator ControlToValidate="GuessTextBox" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Ange ett nummer mellan 1 och 100" Display="Dynamic"></asp:RequiredFieldValidator>
         <asp:RangeValidator ControlToValidate="GuessTextBox" ID="RangeValidator1" runat="server" ErrorMessage="Ange ett nummer mellan 1 och 100" Type="Integer" MaximumValue="100" MinimumValue="1" Display="Dynamic"></asp:RangeValidator>
-        <asp:Button ID="OkButton" runat="server" Text="Button" OnClick="OkButton_Click" />
+        <asp:Button ID="OkButton" runat="server" Text="Gissa" OnClick="OkButton_Click" />
         <asp:Label ID="Label1" runat="server" Text=""></asp:Label>
-        <asp:Button ID="NewButton" runat="server" Text="Button" Visible="false" />
+        <asp:Button ID="NewButton" runat="server" Text="Ny" Visible="false" OnClick="NewButton_Click" />
         <asp:Label ID="Label2" runat="server" Text=""></asp:Label>
 
     </div>
