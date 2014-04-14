@@ -14,7 +14,7 @@ namespace Lab1_4HemligaTalet.Model
         NoMoreGuesses,
         PreviousGuess
     }
-
+         
     public class SecretNumber
     {
         const int MaxNumberOfGuesses = 7;
@@ -27,14 +27,7 @@ namespace Lab1_4HemligaTalet.Model
         {
             get
             {
-                if (MaxNumberOfGuesses > Count)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return MaxNumberOfGuesses > Count && !_previousGuesses.Contains(_number);
             }
         }
 
@@ -45,7 +38,11 @@ namespace Lab1_4HemligaTalet.Model
         {
             get 
             {
-                    return _number;
+                if (CanMakeGuess)
+                {
+                    return null;
+                }
+                return _number;
             }
                 
         }
@@ -59,14 +56,13 @@ namespace Lab1_4HemligaTalet.Model
         public SecretNumber()
         {
             _previousGuesses = new List<int>();
-            Random random = new Random();
-            _number = random.Next(1, 100);
+            Initialize();
         }
 
         public void Initialize()
         {
             Random random = new Random();
-            _number = random.Next(1, 100);
+            _number = random.Next(1, 101);
             _previousGuesses.Clear();
             Outcome = Outcome.Indefinite;
         }
@@ -78,16 +74,17 @@ namespace Lab1_4HemligaTalet.Model
             {
                 throw new ArgumentOutOfRangeException();
             }
-            else if (CanMakeGuess == false)
+
+            if (CanMakeGuess == false)
             {
                 return Outcome.NoMoreGuesses;
             }
-            else if (guess == Number)
+            else if (guess == _number)
             {
                 PreviousGuesses.Add(guess);
                 return Outcome.Correct;
             }
-            else if (guess < Number)
+            else if (guess < _number)
             {
                 PreviousGuesses.Add(guess);
                 return Outcome.Low;

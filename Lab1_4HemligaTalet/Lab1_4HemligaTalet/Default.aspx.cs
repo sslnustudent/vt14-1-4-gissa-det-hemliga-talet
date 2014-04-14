@@ -10,23 +10,25 @@ namespace Lab1_4HemligaTalet
 {
     public partial class Default : System.Web.UI.Page
     {
-        public SecretNumber _secretNumer;
+        private SecretNumber _secretNumer;
 
-        public SecretNumber SecretNumer
+        private SecretNumber SecretNumber
         {
-            get { return _secretNumer ?? (_secretNumer = new SecretNumber()); }
-            set { _secretNumer = value; }
+            get 
+            { 
+                _secretNumer = Session["SecretNumber"] as SecretNumber;
+                if (_secretNumer == null)
+                {
+                    _secretNumer = new SecretNumber();
+                    Session["SecretNumber"] = _secretNumer;
+                }
+                return _secretNumer;
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             GuessTextBox.Focus();
-            if (Session["a"] != null)
-            {
-                Label1.Text = "";
-                SecretNumer = (SecretNumber)Session["a"];
-                Session.Remove("a");
-            }
         }
 
         protected void OkButton_Click(object sender, EventArgs e)
@@ -35,11 +37,11 @@ namespace Lab1_4HemligaTalet
             {
                 Outcome outcome;
                 int guess = int.Parse(GuessTextBox.Text);
-                outcome = SecretNumer.MakeGuess(guess);
+                outcome = SecretNumber.MakeGuess(guess);
 
                 if (outcome == Outcome.Correct)
                 {
-                    Label2.Text = "Rätt, det tog " + SecretNumer.Count + " försök";
+                    Label2.Text = "Rätt, det tog " + SecretNumber.Count + " försök";
                     OkButton.Enabled = false;
                     GuessTextBox.Enabled = false;
                     NewButton.Visible = true;
@@ -58,26 +60,25 @@ namespace Lab1_4HemligaTalet
                     Label2.Text = "För högt";
                 }
 
-                for (int i = 0; i < SecretNumer.Count; i++)
+                for (int i = 0; i < SecretNumber.Count; i++)
                 {
-                    Label1.Text += SecretNumer.PreviousGuesses[i];
+                    Label1.Text += SecretNumber.PreviousGuesses[i];
                     Label1.Text += " ";
                 }
-                if (SecretNumer.CanMakeGuess == false)
+
+                if (!SecretNumber.CanMakeGuess && SecretNumber.Outcome != Outcome.Correct)
                 {
-                    Label2.Text = "Slut på försök, det hemliga talet var: " + SecretNumer.Number;
+                    Label2.Text += "Slut på försök, det hemliga talet var: " + SecretNumber.Number;
                     OkButton.Enabled = false;
                     GuessTextBox.Enabled = false;
                     NewButton.Visible = true;
                 }
-                Session["a"] = SecretNumer;
-                GuessTextBox.Focus();
             }
         }
 
         protected void NewButton_Click(object sender, EventArgs e)
         {
-
+            SecretNumber.Initialize();
         }
     }
 }
